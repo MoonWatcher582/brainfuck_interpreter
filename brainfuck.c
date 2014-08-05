@@ -3,13 +3,13 @@
 char brainfuck[ARR_SIZE];	/*Brainfuck program runs over a large array*/
 int arr_index;			/*Current index in the array*/
 int count;			/*Current index in the executable file*/
+FILE* fp;			/*The executable file*/
+int flag;			/*Error check*/
 
 int main(int argc, char **argv){
 	char c;		
 	count = 0;	
-	arr_index = 0;	
-	FILE *fp;
-	int flag;
+	arr_index = 0;
 	
 	if(argc < 2){
 		printf("No brainfuck source file specified\n");
@@ -39,6 +39,7 @@ int main(int argc, char **argv){
 			continue;
 		}
 		
+		printf("%c\n", c);		
 		flag = process_char(c);
 		
 		if(!flag){
@@ -65,9 +66,20 @@ int process_char(char c){
 	}else if(c == ','){
 
 	}else if(c == '['){
-		
+		int loop = arr_index;
+		FILE* temp = fopen("temp", "w");
+		c = fgetc(fp);
+		while(c != ']'){
+			fputs(&c, temp);
+			c = fgetc(fp);
+			if(c == '['){
+				process_char(c);
+			}
+		}
 	}else if(c == ']'){
-
+		while(loop){
+			
+		}	
 	}else{
 		return 0;
 	}
